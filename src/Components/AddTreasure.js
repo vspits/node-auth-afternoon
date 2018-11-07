@@ -8,13 +8,6 @@ export default class AddTreasure extends Component {
     };
   }
 
-<<<<<<< HEAD
-    handleInput (e) {
-        this.setState({treasureURL:e.target.value})
-    }
-    addTreasure () {
-        // post to add treasure
-=======
   handleInput(e) {
     this.setState({ treasureURL: e.target.value });
   }
@@ -22,7 +15,6 @@ export default class AddTreasure extends Component {
   addTreasure() {
     // post to add treasure
 
->>>>>>> 8b83a479e4c39721046e42909d4b30c1bdfa5cd1
     }
 
   render() {
