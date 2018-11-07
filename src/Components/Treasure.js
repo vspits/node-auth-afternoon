@@ -8,7 +8,7 @@ export default function Treasure(props) {
   return (
     <div >
       {props.addMyTreasure ?
-        <AddTreasure addMyTreasure={props.addMyTreasure} />
+        <AddTreasure />
         : null}
       {treasure}
     </div>
