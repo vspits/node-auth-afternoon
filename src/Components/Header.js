@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './Header.css'
+import axios from 'axios';
 
 export default class Header extends Component {
     constructor() {
@@ -9,28 +10,52 @@ export default class Header extends Component {
             password: '',
             isAdmin: false,
         }
+        this.login = this.login.bind(this)
+        this.logout = this.logout.bind(this)
+        this.register = this.register.bind(this)
     }
-    handleUsernameInput(){
-        // should update this.state.username  based on user input. Do not mutate state, use setState.
+
+    handleUsernameInput(value){
+        this.setState({username: value})
     }
-    handlePasswordInput(){
-        // should update this.state.password based on user input. Do not mutate state, use setState.
+
+    handlePasswordInput(value){
+        this.setState({password: value})
     }
 
     toggleAdmin () {
-        // should toggle the value of isAdmin on state, by setting it to the value of it's opposite. (!this.state.isAdmin)
+        this.setState({isAdmin: !this.state.isAdmin})
     }
 
-    login () {
-        // create POST request to login endpoint
+    login() {
+        const { username, password, isAdmin } = this.state;
+        console.log(this.props.user)
+        axios.post('/auth/login', { username, password })
+             .then( () => {
+                 this.setState({
+                     username: '',
+                     password: ''
+                 })
+                 this.props.updateUser({username, isAdmin})
+             })
     }
 
     register () {
-        // create POST request to register new user
+        const { username, password, isAdmin } = this.state
+        axios.post(`/auth/register`, {username, password, isAdmin})
+            .then( () => {
+                this.setState({
+                    username: '',
+                    password: ''
+                })
+                this.props.updateUser(username, isAdmin)
+            })
     }
 
-    logout () {
-        // GET request to logout
+    logout() {
+        axios.get('/auth/logout').then(()=>{
+            this.props.updateUser({})
+        })
     }
 
     render() {
@@ -52,12 +77,12 @@ export default class Header extends Component {
                             <input type="text"
                                 placeholder="Username"
                                 value={username}
-                                
+                                onChange={e => this.handleUsernameInput(e.target.value)}
                             />
                             <input type="password"
                                 placeholder="Password"
                                 value={password}
-                                
+                                onChange={e => this.handlePasswordInput(e.target.value)}
                             />
                             <div className='adminCheck' >
                                 <input type="checkbox" id='adminCheckbox'  /> <span> Admin </span>
